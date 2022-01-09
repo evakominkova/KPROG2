@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 public class ClenoveTabulka  extends AbstractTableModel {
 
     SeznamClenu data;
-    String[] names = {"Jméno", "Kategorie", "Město bydliště"};
+    String[] names = {"Jméno", "Kategorie", "Město bydliště", "Datum narozeni"};
 
 
     public ClenoveTabulka(SeznamClenu data) { this.data = data;
@@ -24,7 +24,7 @@ public class ClenoveTabulka  extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 3;
+        return 4;
     }
 
     public String getColumnName(int col) {
@@ -50,6 +50,11 @@ public class ClenoveTabulka  extends AbstractTableModel {
             case 2:
             s = clen.getMestoBydliste();
             break;
+
+            case 3:
+                s = clen.getDatum();
+                break;
+
         }
 
         return s;

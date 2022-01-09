@@ -44,7 +44,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
     private JTextField tfJmeno = new JTextField(20);
     private JTextField tfKategorie = new JTextField(10);
     private JTextField tfMestoBydliste = new JTextField(20);
-    private JTextField tfVek = new JTextField(5);
+    private JTextField tfDatumNarozeni = new JTextField(20);
 
     Action actionNew,
             actionOpen, actionSave, actionExit, actionAbout, actionFind, actionClearFilter;
@@ -100,14 +100,18 @@ public class HlavniOkno extends JFrame implements ActionListener {
         tfKategorie.setToolTipText("věková kategorie");
         tfMestoBydliste.addFocusListener(autoSelectListener);
         tfMestoBydliste.setToolTipText("město bydliště člena");
+        tfDatumNarozeni.addFocusListener(autoSelectListener);
+        tfDatumNarozeni.setToolTipText("datum narození člena");
         JPanel p2 = new JPanel();
         p2.setLayout(new GridLayout(2, 3, 10, 2));
         p2.add(new JLabel("Jméno člena"));
         p2.add(new JLabel("Členská kategorie"));
         p2.add(new JLabel("Město bydliště"));
+        p2.add(new JLabel("Datum narození člena"));
         p2.add(tfJmeno);
         p2.add(tfKategorie);
         p2.add(tfMestoBydliste);
+        p2.add(tfDatumNarozeni);
         mainPanel.add(p2);
 
         JPanel p1 = new JPanel();
@@ -144,6 +148,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
                             tfJmeno.setText(clen.getJmeno());
                             tfKategorie.setText(clen.getKategorie());
                             tfMestoBydliste.setText(clen.getMestoBydliste());
+                            Integer.valueOf(tfDatumNarozeni.getText());
                         }
                     }
                 });
@@ -183,7 +188,10 @@ public class HlavniOkno extends JFrame implements ActionListener {
                     new Clen(
                             tfJmeno.getText(),
                             tfKategorie.getText(),
+                            tfDatumNarozeni.getText(),
                             tfMestoBydliste.getText());
+
+
 
             clenove.add(clen);
             clenoveTabulka.refresh();
@@ -194,6 +202,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
                 Clen clen = new Clen(
                         tfJmeno.getText(),
                         tfKategorie.getText(),
+                        tfDatumNarozeni.getText(),
                         tfMestoBydliste.getText());
                 clenove.set(clen, pos);
                 clenoveTabulka.refresh();
