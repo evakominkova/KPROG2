@@ -14,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 
 import static javax.swing.JOptionPane.*;
@@ -148,7 +150,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
                             tfJmeno.setText(clen.getJmeno());
                             tfKategorie.setText(clen.getKategorie());
                             tfMestoBydliste.setText(clen.getMestoBydliste());
-                            Integer.valueOf(tfDatumNarozeni.getText());
+                            tfDatumNarozeni.setText(clen.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));  //TK
                         }
                     }
                 });
@@ -161,6 +163,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         JScrollPane sp = new JScrollPane(tbClenove);
         sp.setBorder(BorderFactory.createTitledBorder("Seznam členů"));
 //        sp.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        clenove.add(new Clen("Tomas Kozel", "skaut", "Jicin", LocalDate.now()));
         innerPanel.add(sp, "Center");
     }
 
@@ -188,8 +191,9 @@ public class HlavniOkno extends JFrame implements ActionListener {
                     new Clen(
                             tfJmeno.getText(),
                             tfKategorie.getText(),
-                            tfDatumNarozeni.getText(),
-                            tfMestoBydliste.getText());
+                            tfMestoBydliste.getText(),
+                            LocalDate.parse(tfDatumNarozeni.getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")) //TK
+                    );
 
 
 
@@ -202,8 +206,9 @@ public class HlavniOkno extends JFrame implements ActionListener {
                 Clen clen = new Clen(
                         tfJmeno.getText(),
                         tfKategorie.getText(),
-                        tfDatumNarozeni.getText(),
-                        tfMestoBydliste.getText());
+                        tfMestoBydliste.getText(),
+                        LocalDate.parse(tfDatumNarozeni.getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")) //TK
+                );
                 clenove.set(clen, pos);
                 clenoveTabulka.refresh();
                 clenove.remove(pos);
@@ -344,42 +349,42 @@ public class HlavniOkno extends JFrame implements ActionListener {
         };
         actionNew.putValue(Action.SHORT_DESCRIPTION,"Prázdný soubor");
 
-            actionOpen = new AbstractAction("Otevřít", new ImageIcon(getClass().getResource("/registrace2022/Data/img/loadBinder.png"))) {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    openFile();
-                    clenoveTabulka.refresh();
+        actionOpen = new AbstractAction("Otevřít", new ImageIcon(getClass().getResource("/registrace2022/Data/img/loadBinder.png"))) {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                openFile();
+                clenoveTabulka.refresh();
 
-                }
-            };
+            }
+        };
 
-            actionSave = new AbstractAction("Uložit", new ImageIcon(getClass().getResource("/registrace2022/Data/img/saveBinder.png"))) {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    saveFile();
+        actionSave = new AbstractAction("Uložit", new ImageIcon(getClass().getResource("/registrace2022/Data/img/saveBinder.png"))) {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                saveFile();
 
-                }
-            };
+            }
+        };
 
-            actionAbout = new AbstractAction("O programu") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    about();
+        actionAbout = new AbstractAction("O programu") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                about();
 
-                }
-            };
+            }
+        };
 
-            actionClearFilter = new AbstractAction("Zruš hledany filtr") {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
+        actionClearFilter = new AbstractAction("Zruš hledany filtr") {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
 //                    odeberFiltr();
 
-                }
+            }
 
-            };
-        }
+        };
+    }
 
-        private void openFile() {
+    private void openFile() {
         JFileChooser fc = new FileClen();
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
@@ -392,50 +397,43 @@ public class HlavniOkno extends JFrame implements ActionListener {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-                }
             }
         }
+    }
 
 //        private void odeberFiltr() {
 //        RowFilter <
 //        }
 
-        private void saveFile () {
-            JFileChooser fc = new FileClen();
-            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                try {
-                    String fileName = fc.getSelectedFile().getAbsolutePath();
-                    if (!fileName.endsWith(".clen"))
-                        fileName += ".car";
-                    FileOutputStream fos =
-                            new FileOutputStream(fileName);
-                    clenove.writeData(fos);
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    showMessageDialog(
-                            this,
-                            "Soubor nelze ulozit" + "!",
-                            "Chyba",
-                            ERROR_MESSAGE);
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    private void saveFile () {
+        JFileChooser fc = new FileClen();
+        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                String fileName = fc.getSelectedFile().getAbsolutePath();
+                if (!fileName.endsWith(".clen"))
+                    fileName += ".car";
+                FileOutputStream fos =
+                        new FileOutputStream(fileName);
+                clenove.writeData(fos);
+                fos.close();
+            } catch (FileNotFoundException e) {
+                showMessageDialog(
+                        this,
+                        "Soubor nelze ulozit" + "!",
+                        "Chyba",
+                        ERROR_MESSAGE);
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+    }
 
-        public static void main (String[]args){
-            SwingUtilities.invokeLater(() -> {
-                new HlavniOkno().setVisible(true);
-            });
+    public static void main (String[]args){
+        SwingUtilities.invokeLater(() -> {
+            new HlavniOkno().setVisible(true);
+        });
 
 
-        }
+    }
 }
-
-
-
-
-
-
-

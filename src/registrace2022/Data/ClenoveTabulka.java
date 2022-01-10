@@ -1,6 +1,7 @@
 package registrace2022.Data;
 
 import javax.swing.table.AbstractTableModel;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Trida pro zobrazeni clenu v tabulce
@@ -48,22 +49,22 @@ public class ClenoveTabulka  extends AbstractTableModel {
                 break;
 
             case 2:
-            s = clen.getMestoBydliste();
-            break;
+                s = clen.getMestoBydliste();
+                break;
 
             case 3:
-                s = clen.getDatum();
+                s = clen.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));   //TK
                 break;
 
         }
 
         return s;
     }
-    
+
     public boolean isCellEditable (int row, int col) {
         return false;
     }
-    
+
     public void refresh() {
         fireTableDataChanged();
     }
