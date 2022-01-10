@@ -28,11 +28,12 @@ public class HlavniOkno extends JFrame implements ActionListener {
 
 
     //Tlacitka
-    JButton btAdd = new JButton("Přidat");
-    JButton btDel = new JButton("Smazat");
-    JButton btUpd = new JButton("Upravit");
-    JButton btSer = new JButton("Vyhledat");
-    JButton btSort =  new JButton("Seřadit");
+    JButton btAdd = new JButton("Přidat člena");
+    JButton btDel = new JButton("Smazat člena");
+    JButton btDel2 = new JButton("Smazat celou registraci");
+    JButton btUpd = new JButton("Upravit člena");
+    JButton btSer = new JButton("Vyhledat člena");
+    JButton btSort =  new JButton("Seřadit členy");
     JButton btAbout = new JButton("O programu");
 
     SeznamClenu clenove = new SeznamClenu();
@@ -65,7 +66,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         pack();
     }
 
-    protected void initGui() {
+    protected void initGui() { //inicializace
         setBackground(Color.yellow);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/registrace2022/Data/img/coffee-icon.png")));
 
@@ -123,13 +124,19 @@ public class HlavniOkno extends JFrame implements ActionListener {
         btUpd.setToolTipText("Uloženi aktualních změn do vybraného zaznamu");
         btDel.addActionListener(this);
         btDel.setToolTipText("Smazani vybraneho clena z evidence");
+        btDel2.addActionListener(this);
+        btDel2.setToolTipText("Smazani cele registrace - všech členů");
         btSer.addActionListener(this);
         btSer.setToolTipText("Vyhledat člena dle jména");
         btSort.setToolTipText("Seřadit členy dle abecedy");
+        btAbout.addActionListener(this);
+        btAbout.setToolTipText("O programu");
+
 
         p1.add(btAdd);
         p1.add(btUpd);
         p1.add(btDel);
+        p1.add(btDel2);
         p1.add(btSer);
         p1.add(btSort);
         p1.add(btAbout);
@@ -177,7 +184,6 @@ public class HlavniOkno extends JFrame implements ActionListener {
         tb.addSeparator();
         tb.add(actionSave);
         tb.addSeparator();
-        tb.add(actionAbout);
         return tb;
     }
 
@@ -196,18 +202,21 @@ public class HlavniOkno extends JFrame implements ActionListener {
                     );
 
 
-
             clenove.add(clen);
             clenoveTabulka.refresh();
             clearInput();
             tfJmeno.grabFocus();
+
+        } else if (e.getSource()==btDel2) {
+            clenove.clear();
+
         } else if (e.getSource() == btUpd) { //pracuji s tlacitkem upravit
             if ((pos = tbClenove.getSelectedRow()) != -1) { //-1 protoze indexuji od nuly!!!
                 Clen clen = new Clen(
                         tfJmeno.getText(),
                         tfKategorie.getText(),
                         tfMestoBydliste.getText(),
-                        LocalDate.parse(tfDatumNarozeni.getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")) //TK
+                        LocalDate.parse(tfDatumNarozeni.getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy"))
                 );
                 clenove.set(clen, pos);
                 clenoveTabulka.refresh();
@@ -221,13 +230,10 @@ public class HlavniOkno extends JFrame implements ActionListener {
                     clenove.remove(pos);
                 clenoveTabulka.refresh();
             }
-        } else if (e.getSource()== btSer) {
-            Comparator<Clen> porovnavac = new Comparator<Clen>() {
-                @Override
-                public int compare(Clen o1, Clen o2) {
-                    return 0;
-                }
-            };
+//        } else if (e.getSource()== btSer) {
+//            int pos = najdi
+//            }
+
         }else  if (e.getSource()== btAbout) {
             about();
 
@@ -313,7 +319,6 @@ public class HlavniOkno extends JFrame implements ActionListener {
         helpMenu.addSeparator();
         helpMenu.add(checkBoxMenuItem);
         helpMenu.addSeparator();
-        helpMenu.add(actionAbout);
 
         bar.add(fileMenu);
         bar.add(helpMenu);
@@ -323,15 +328,19 @@ public class HlavniOkno extends JFrame implements ActionListener {
 
     private void about () {
         JOptionPane.showMessageDialog(this,
-                "Evidence Clenu",
+                "Evidence členů organizační jednotky Skaut, z.s.\n tvůrce: Ing. Eva Komínková",
                 "O Programu",
-                JOptionPane.INFORMATION_MESSAGE + OK_OPTION);}
+                JOptionPane.INFORMATION_MESSAGE + JOptionPane.OK_OPTION);}
+
+
 
     private void clearInput() {
         tfJmeno.setText("");
         tfKategorie.setText("");
         tfMestoBydliste.setText("");
     }
+
+//    private void
 
     private void close() {
         System.exit(0);
