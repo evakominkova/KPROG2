@@ -41,6 +41,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
     JTable tbClenove = new JTable(clenoveTabulka);
 
     JCheckBoxMenuItem checkBoxMenuItem = new JCheckBoxMenuItem("Opravdu smazat záznam?", true);
+    JCheckBoxMenuItem checkBoxMenuItemSmazani = new JCheckBoxMenuItem("Opravdu chcete smazat celou evidenci?", true);
 
     // vstupni pole
 
