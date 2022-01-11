@@ -171,7 +171,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         JScrollPane sp = new JScrollPane(tbClenove);
         sp.setBorder(BorderFactory.createTitledBorder("Seznam členů"));
 //        sp.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
-        clenove.add(new Clen("Tomas Kozel", "skaut", "Jicin", LocalDate.now()));
+//        clenove.add(new Clen("Tomas Kozel", "skaut", "Jicin", LocalDate.now()));
         innerPanel.add(sp, "Center");
     }
 
@@ -208,8 +208,11 @@ public class HlavniOkno extends JFrame implements ActionListener {
             clearInput();
             tfJmeno.grabFocus();
 
-        } else if (e.getSource()==btDel2) {
-            clenove.clear();
+        } else if (e.getSource() == btDel2) {
+            if (!checkBoxMenuItemSmazani.isSelected()
+                    || showConfirmDialog(this, "Opravdu chcete smazat záznam?", "Potvrd!", YES_NO_OPTION) == OK_OPTION)
+                clenove.clear();
+            clenoveTabulka.refresh();
 
         } else if (e.getSource() == btUpd) { //pracuji s tlacitkem upravit
             if ((pos = tbClenove.getSelectedRow()) != -1) { //-1 protoze indexuji od nuly!!!
@@ -231,32 +234,20 @@ public class HlavniOkno extends JFrame implements ActionListener {
                     clenove.remove(pos);
                 clenoveTabulka.refresh();
             }
-//        } else if (e.getSource()== btSer) {
-//            int pos = najdi
+        } else if (e.getSource()== btSer) {
+            String jmeno = JOptionPane.showInputDialog("Zadejte jméno člena v evidenci");
+            clenove.najdiClena(jmeno);
 //            }
 
-        }else  if (e.getSource()== btAbout) {
+        } else if (e.getSource() == btAbout) {
             about();
 
-        } else if (e.getSource()== btSort) {
+        } else if (e.getSource() == btSort) {
 //            Arrays.sort(clenove);
 //            System.out.println(Arrays.toString(clenove));
         }
     }
 
-//    private void editace() {
-//        String poradiStr = JOptionPane.showInputDialog("Zadejte čislo člena pro úpravu");
-//        try {
-//            int poradi = Integer.valueOf(poradiStr);
-//            poradi--;
-//            if (poradi >= 0 && clenove.size()) {
-//                Clen c = new Clen()
-//            }
-//
-//        }
-//    }
-
-//    private void clear
 
     private void createMenu() {
         JMenuBar bar = new JMenuBar();
@@ -339,6 +330,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         tfJmeno.setText("");
         tfKategorie.setText("");
         tfMestoBydliste.setText("");
+        tfDatumNarozeni.setText("");
     }
 
 //    private void
@@ -421,7 +413,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
             try {
                 String fileName = fc.getSelectedFile().getAbsolutePath();
                 if (!fileName.endsWith(".clen"))
-                    fileName += ".car";
+                    fileName += ".clen";
                 FileOutputStream fos =
                         new FileOutputStream(fileName);
                 clenove.writeData(fos);
