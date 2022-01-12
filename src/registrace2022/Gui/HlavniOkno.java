@@ -236,7 +236,12 @@ public class HlavniOkno extends JFrame implements ActionListener {
             }
         } else if (e.getSource()== btSer) {
             String jmeno = JOptionPane.showInputDialog("Zadejte jméno člena v evidenci");
-            clenove.najdiClena(jmeno);
+            int i = clenove.najdiClena(jmeno);
+            if (i == -1) {
+                JOptionPane.showMessageDialog(this, "Člen nalezen v evidenci!");
+            }else {
+        tbClenove.setRowSelectionInterval(i,i);
+            }
 //            }
 
         } else if (e.getSource() == btAbout) {

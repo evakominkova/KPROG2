@@ -38,14 +38,15 @@ public class SeznamClenu {
     }
 
     //metoda pro tlacitko najdi
-    public Clen najdiClena (String jmeno) {
-        Clen clen = data.get(0);
-        for (int i = 0; i< size();i++) {
-            if(data.get(i).getJmeno().equals(jmeno)){
-                clen = data.get(i) ;
+    public int najdiClena (String jmeno) {
+        int pozice = -1;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getJmeno().equals(jmeno)) {
+                pozice = i;
+                break;
             }
         }
-        return clen;
+        return pozice;
     }
 
     public Clen najdiClena (int i) {
