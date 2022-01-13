@@ -53,7 +53,7 @@ public class ClenoveTabulka  extends AbstractTableModel {
                 break;
 
             case 3:
-                s = clen.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));   //TK
+                s = (clen.getDatum()!=null) ? clen.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "";   //UpravenoTK
                 break;
 
         }

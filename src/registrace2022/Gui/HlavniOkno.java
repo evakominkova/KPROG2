@@ -158,7 +158,11 @@ public class HlavniOkno extends JFrame implements ActionListener {
                             tfJmeno.setText(clen.getJmeno());
                             tfKategorie.setText(clen.getKategorie());
                             tfMestoBydliste.setText(clen.getMestoBydliste());
-                            tfDatumNarozeni.setText(clen.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));  //TK
+                            if (clen.getDatum() != null) {
+                                tfDatumNarozeni.setText(clen.getDatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));  //TK
+                            } else {
+                                tfDatumNarozeni.setText("");
+                            }
                         }
                     }
                 });
@@ -194,12 +198,17 @@ public class HlavniOkno extends JFrame implements ActionListener {
         int pos;
 
         if (e.getSource() == btAdd) { //pracuji s tlacitkem pridat
+            LocalDate datum;
+            if (tfDatumNarozeni.getText().length()==0)
+                datum = null;
+            else
+                datum = LocalDate.parse(tfDatumNarozeni.getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
             Clen clen =
                     new Clen(
                             tfJmeno.getText(),
                             tfKategorie.getText(),
                             tfMestoBydliste.getText(),
-                            LocalDate.parse(tfDatumNarozeni.getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")) //TK
+                            datum
                     );
 
 
@@ -210,7 +219,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
 
         } else if (e.getSource() == btDel2) {
             if (!checkBoxMenuItemSmazani.isSelected()
-                    || showConfirmDialog(this, "Opravdu chcete smazat záznam?", "Potvrd!", YES_NO_OPTION) == OK_OPTION)
+                    || showConfirmDialog(this, "Opravdu chcete smazat celou evidenci? ", "Potvrd!", YES_NO_OPTION) == OK_OPTION)
                 clenove.clear();
             clenoveTabulka.refresh();
 
@@ -234,7 +243,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
                     clenove.remove(pos);
                 clenoveTabulka.refresh();
             }
-        } else if (e.getSource()== btSer) {
+        } else if (e.getSource()== btSer) { //Ser - ne seradit, ale search - vyhledat
             String jmeno = JOptionPane.showInputDialog("Zadejte jméno člena v evidenci");
             int i = clenove.najdiClena(jmeno);
             if (i == -1) {
@@ -248,8 +257,9 @@ public class HlavniOkno extends JFrame implements ActionListener {
             about();
 
         } else if (e.getSource() == btSort) {
-//            Arrays.sort(clenove);
-//            System.out.println(Arrays.toString(clenove));
+            clenove.seradit();
+            System.out.println();
+            clenoveTabulka.refresh();
         }
     }
 
@@ -313,9 +323,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         checkBoxMenuItem.setToolTipText("Potvrzovaci okno pri mazani");
 
         helpMenu.add(lookMenu);
-        helpMenu.addSeparator();
-        helpMenu.add(checkBoxMenuItem);
-        helpMenu.addSeparator();
+
 
         bar.add(fileMenu);
         bar.add(helpMenu);

@@ -2,8 +2,11 @@ package registrace2022.Data;
 
 
 import java.io.*;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Trida agregujici cleny strediska
@@ -11,21 +14,21 @@ import java.util.List;
  */
 public class SeznamClenu {
 
-    private List<Clen> data;
+    private List<Clen> dataClenu;
 
     /**
      * vytvoreni konstruktoru
      */
 
     public SeznamClenu() {
-        this.data = new ArrayList<Clen>();
+        this.dataClenu = new ArrayList<Clen>();
 
     }
     /**
      * Smazani vsech zaznamu
      */
     public void clear() {
-        data.clear();
+        dataClenu.clear();
     }
 
 
@@ -34,14 +37,14 @@ public class SeznamClenu {
      */
 
     public void add(Clen clen) {
-        data.add(clen);
+        dataClenu.add(clen);
     }
 
     //metoda pro tlacitko najdi
     public int najdiClena (String jmeno) {
         int pozice = -1;
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getJmeno().equals(jmeno)) {
+        for (int i = 0; i < dataClenu.size(); i++) {
+            if (dataClenu.get(i).getJmeno().equals(jmeno)) {
                 pozice = i;
                 break;
             }
@@ -50,7 +53,7 @@ public class SeznamClenu {
     }
 
     public Clen najdiClena (int i) {
-        return data.get(i);
+        return dataClenu.get(i);
     }
 
     /**
@@ -58,21 +61,36 @@ public class SeznamClenu {
      */
 
     public int size() {
-        return data.size();
+        return dataClenu.size();
+    }
+
+    /**
+     * razeni clenu v evidenci dle jmena a abecedy
+     */
+
+    public void seradit() {
+        Comparator<Clen> porovnavac = new Comparator<Clen>() {
+            @Override
+            public int compare(Clen c1, Clen c2) {
+                return Collator.getInstance().compare(c1.getJmeno(),c2.getJmeno());
+            }
+        };
+        dataClenu = dataClenu.stream().sorted(porovnavac).collect(Collectors.toList());
+
     }
 
     /**
      *Vrací clena s konkrétní zadanou pozicí
      */
     public Clen get(int pos) {
-        return data.get(pos);
+        return dataClenu.get(pos);
     }
 
     /**
      * nastavuje clena na konkrétni pozici
      */
     public void set(Clen clen,int pos) {
-        data.set(pos,clen);
+        dataClenu.set(pos,clen);
     }
 
     /**
@@ -80,7 +98,7 @@ public class SeznamClenu {
      * @param pos
      */
     public void remove (int pos) {
-        data.remove(pos);
+        dataClenu.remove(pos);
     }
 
     /**
@@ -88,7 +106,7 @@ public class SeznamClenu {
      */
 public void writeData (OutputStream out) throws IOException {
     ObjectOutputStream oStream = new ObjectOutputStream(out);
-    oStream.writeObject(data);
+    oStream.writeObject(dataClenu);
 }
 
 /**
@@ -98,7 +116,7 @@ public void writeData (OutputStream out) throws IOException {
 public void readData (InputStream input) throws IOException {
     try {
         ObjectInputStream ois = new ObjectInputStream(input);
-        data = (List<Clen>) ois.readObject();
+        dataClenu = (List<Clen>) ois.readObject();
     }catch (ClassNotFoundException e) {
         e.printStackTrace();
     }
