@@ -5,6 +5,7 @@ import registrace2022.Data.SeznamClenu;
 import registrace2022.Data.ClenoveTabulka;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
@@ -59,6 +60,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
 //        this.setVisible(true);
         this.setTitle("Registrace2022");
 
+
         initGui();
 //        setSize(300,300);
 
@@ -75,7 +77,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
 
         JToolBar toolBar = createToolbar();
         add(toolBar, "Center");
-//        toolBar.setBackground(Color.CYAN);
+        toolBar.setBackground(Color.yellow);
 
         JPanel innerPanel = new JPanel(new BorderLayout());
         add(innerPanel, "Center");
@@ -83,6 +85,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createTitledBorder("Detail člena"));
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.orange, 10));
 //        mainPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
 
         createActions();
@@ -107,6 +110,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         tfDatumNarozeni.addFocusListener(autoSelectListener);
         tfDatumNarozeni.setToolTipText("datum narození člena");
         JPanel p2 = new JPanel();
+        p2.setBackground(Color.cyan);
         p2.setLayout(new GridLayout(2, 3, 10, 2));
         p2.add(new JLabel("Jméno člena"));
         p2.add(new JLabel("Členská kategorie"));
@@ -119,6 +123,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         mainPanel.add(p2);
 
         JPanel p1 = new JPanel();
+    p1.setBackground(Color.pink);
         btAdd.addActionListener(this);
         btAdd.setToolTipText("Přidání nového člena do evidence");
         btUpd.addActionListener(this);
@@ -127,6 +132,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         btDel.setToolTipText("Smazani vybraneho clena z evidence");
         btDel2.addActionListener(this);
         btDel2.setToolTipText("Smazani cele registrace - všech členů");
+       btDel2.setBackground(Color.red);
         btSer.addActionListener(this);
         btSer.setToolTipText("Vyhledat člena dle jména");
         btSort.setToolTipText("Seřadit členy dle abecedy");
@@ -173,6 +179,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
 
         tbClenove.setToolTipText("Seznam členů v registraci");
         JScrollPane sp = new JScrollPane(tbClenove);
+        sp.setBackground(Color.green);
         sp.setBorder(BorderFactory.createTitledBorder("Seznam členů"));
 //        sp.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
 //        clenove.add(new Clen("Tomas Kozel", "skaut", "Jicin", LocalDate.now()));
@@ -258,7 +265,6 @@ public class HlavniOkno extends JFrame implements ActionListener {
 
         } else if (e.getSource() == btSort) {
             clenove.seradit();
-            System.out.println();
             clenoveTabulka.refresh();
         }
     }

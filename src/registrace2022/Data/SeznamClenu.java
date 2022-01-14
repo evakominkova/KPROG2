@@ -14,28 +14,26 @@ import java.util.stream.Collectors;
  */
 public class SeznamClenu {
 
-    private List<Clen> dataClenu;
+    private List<Clen> dataClenu; //atribut do ktereho nacitam cleny - seznam
 
     /**
      * vytvoreni konstruktoru
      */
-
     public SeznamClenu() {
-        this.dataClenu = new ArrayList<Clen>();
-
+        this.dataClenu = new ArrayList<Clen>(); //arrayList, protoze neznam predem pocet clenu
     }
+
     /**
      * Smazani vsech zaznamu
      */
     public void clear() {
         dataClenu.clear();
-    }
+    } //mazu zaznam clena ze seznamu
 
 
     /**
      * pridani clena do evidence
      */
-
     public void add(Clen clen) {
         dataClenu.add(clen);
     }
@@ -68,15 +66,31 @@ public class SeznamClenu {
      * razeni clenu v evidenci dle jmena a abecedy
      */
 
-    public void seradit() {
-        Comparator<Clen> porovnavac = new Comparator<Clen>() {
-            @Override
-            public int compare(Clen c1, Clen c2) {
-                return Collator.getInstance().compare(c1.getJmeno(),c2.getJmeno());
-            }
-        };
-        dataClenu = dataClenu.stream().sorted(porovnavac).collect(Collectors.toList());
+//    public void seradit() {
+//        Comparator<Clen> porovnavac = new Comparator<Clen>() {
+//            @Override
+//            public int compare(Clen c1, Clen c2) {
+//                return Collator.getInstance().compare(c1.getJmeno(),c2.getJmeno());
+//            }
+//        };
+//        dataClenu = dataClenu.stream().sorted(porovnavac).collect(Collectors.toList());
+//
+//    }
 
+    public void seradit() {
+        for (int i = 0; i < dataClenu.size() - 1; i++) {
+            int imin = i;
+            for (int j = i + 1; j < dataClenu.size(); j++) {
+                if (dataClenu.get(imin).getJmeno().compareTo(dataClenu.get(j).getJmeno()) > 0) {
+                    imin = j;
+                }
+            }
+            if (imin != i) {
+                Clen pom = dataClenu.get(i); //Clen = typ promenné, název promenne je pom
+                dataClenu.set(i, dataClenu.get(imin));
+                dataClenu.set(imin, pom);
+            }
+        }
     }
 
     /**

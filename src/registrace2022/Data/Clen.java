@@ -9,14 +9,14 @@ import java.time.LocalDate;
 
 public class Clen implements Serializable {
 
-    String jmeno= null;
-    String kategorie = null;
-    String mestoBydliste = null;
-    LocalDate datumNarozeni = null;
+    String jmeno= null; //atribut
+    String kategorie = null; //atribut
+    String mestoBydliste = null; //atribut
+    LocalDate datumNarozeni = null; //atribut
 
-    public Clen() {}
+    public Clen() {} //konstruktor
 
-    public Clen(String jmeno, String kategorie, String mestoBydliste, LocalDate datumNarozeni) {
+    public Clen(String jmeno, String kategorie, String mestoBydliste, LocalDate datumNarozeni) { //konstruktor
         this.jmeno=jmeno;
         this.kategorie=kategorie;
         this.mestoBydliste=mestoBydliste;
@@ -24,9 +24,11 @@ public class Clen implements Serializable {
 
     }
 
+    //gettery - čteni atributu, set - zapis atributu
+
     public void setJmeno(String jmeno) {
         this.jmeno=jmeno;
-    }
+    } //metoda nastavuji jmeno
 
     public void setKategorie(String kategorie) {
         this.kategorie=kategorie;
