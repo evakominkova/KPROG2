@@ -78,9 +78,9 @@ public class SeznamClenu {
 //    }
 
     public void seradit() {
-        for (int i = 0; i < dataClenu.size() - 1; i++) {
+        for (int i = 0; i < dataClenu.size() - 1; i++) { //-1 protoze indexuji od nuly. --size-1 je roven posledni clen v evidenci
             int imin = i;
-            for (int j = i + 1; j < dataClenu.size(); j++) {
+            for (int j = i + 1; j < dataClenu.size(); j++) { //j = i+1 protoze nemuzu srovnavat stejny clen se stejnym clenem
                 if (dataClenu.get(imin).getJmeno().compareTo(dataClenu.get(j).getJmeno()) > 0) {
                     imin = j;
                 }

@@ -36,6 +36,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
     JButton btSer = new JButton("Vyhledat člena");
     JButton btSort =  new JButton("Seřadit členy");
     JButton btAbout = new JButton("O programu");
+    JButton btSize = new JButton("Počet členů v registraci");
 
     SeznamClenu clenove = new SeznamClenu();
     ClenoveTabulka clenoveTabulka = new ClenoveTabulka(clenove);
@@ -70,7 +71,6 @@ public class HlavniOkno extends JFrame implements ActionListener {
     }
 
     protected void initGui() { //inicializace
-        setBackground(Color.yellow);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/registrace2022/Data/img/coffee-icon.png")));
 
 //        mainPanel.setBackground(Color.cyan);
@@ -80,6 +80,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         toolBar.setBackground(Color.yellow);
 
         JPanel innerPanel = new JPanel(new BorderLayout());
+        innerPanel.setBorder(BorderFactory.createLineBorder(Color.blue,15));
         add(innerPanel, "Center");
 
         JPanel mainPanel = new JPanel();
@@ -123,8 +124,8 @@ public class HlavniOkno extends JFrame implements ActionListener {
         mainPanel.add(p2);
 
         JPanel p1 = new JPanel();
-    p1.setBackground(Color.pink);
-        btAdd.addActionListener(this);
+    p1.setBorder(BorderFactory.createLineBorder(Color.pink,15));
+    btAdd.addActionListener(this);
         btAdd.setToolTipText("Přidání nového člena do evidence");
         btUpd.addActionListener(this);
         btUpd.setToolTipText("Uloženi aktualních změn do vybraného zaznamu");
@@ -135,7 +136,10 @@ public class HlavniOkno extends JFrame implements ActionListener {
        btDel2.setBackground(Color.red);
         btSer.addActionListener(this);
         btSer.setToolTipText("Vyhledat člena dle jména");
+        btSort.addActionListener(this);
         btSort.setToolTipText("Seřadit členy dle abecedy");
+        btSize.setToolTipText("Počet členů v registraci");
+        btSize.addActionListener(this);
         btAbout.addActionListener(this);
         btAbout.setToolTipText("O programu");
 
@@ -146,6 +150,7 @@ public class HlavniOkno extends JFrame implements ActionListener {
         p1.add(btDel2);
         p1.add(btSer);
         p1.add(btSort);
+        p1.add(btSize);
         p1.add(btAbout);
         mainPanel.add(p1);
 
@@ -243,6 +248,11 @@ public class HlavniOkno extends JFrame implements ActionListener {
                 clenove.remove(pos);
                 clenove.add(clen);
             }
+
+        } else if (e.getSource()== btSize) {
+            JOptionPane.showMessageDialog(this,"Celkový počet registrovaných členů je: " + clenove.size());
+
+
         } else if (e.getSource() == btDel) {
             if ((pos = tbClenove.getSelectedRow()) != -1) {
                 if (!checkBoxMenuItem.isSelected()
@@ -422,9 +432,6 @@ public class HlavniOkno extends JFrame implements ActionListener {
         }
     }
 
-//        private void odeberFiltr() {
-//        RowFilter <
-//        }
 
     private void saveFile () {
         JFileChooser fc = new FileClen();
